@@ -56,7 +56,7 @@ layout: default
           <div class="post-layout__tags">
             {% for tag in page.tags %}
               {% assign tag_slug = site.data.tag_slugs[tag] | default: tag | slugify %}
-              <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}" class="post-layout__tag">#{{ tag }}</a>
+              <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}" class="post-layout__tag post-card__tag">#{{ tag }}</a>
             {% endfor %}
           </div>
         {% endif %}

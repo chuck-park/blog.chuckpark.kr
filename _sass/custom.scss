@@ -564,13 +564,7 @@ body.mobile-menu-open {
 }
 
 .post-layout__tag {
-  color: #b6b1a9;
-  text-decoration: none;
   font-size: 0.95rem;
-}
-
-.post-layout__tag:hover {
-  color: #f8f4ed;
 }
 
 .page__subscribe-wrap {
@@ -832,7 +826,6 @@ html[data-theme="light"] .site-footer__brand p,
 html[data-theme="light"] .site-footer__bottom p,
 html[data-theme="light"] .site-footer__links a,
 html[data-theme="light"] .site-footer__social a,
-html[data-theme="light"] .post-layout__tag,
 html[data-theme="light"] .page__content .image-note,
 html[data-theme="light"] .post-card__meta,
 html[data-theme="light"] .post-layout__date {
@@ -844,7 +837,6 @@ html[data-theme="light"] .menu-main ul li.active > a,
 html[data-theme="light"] .post-card__title a:hover,
 html[data-theme="light"] .site-footer__links a:hover,
 html[data-theme="light"] .site-footer__social a:hover,
-html[data-theme="light"] .post-layout__tag:hover,
 html[data-theme="light"] .post-card__category:hover,
 html[data-theme="light"] .taxonomy__index a.is-active {
   color: #1f1d1b;
