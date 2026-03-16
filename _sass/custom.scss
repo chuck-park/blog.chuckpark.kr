@@ -356,6 +356,26 @@ body.mobile-menu-open {
   justify-content: center;
 }
 
+.pagination ul li a {
+  color: #f8f4ed;
+  background: #171a20;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pagination ul li a:hover {
+  color: #ffffff;
+}
+
+.pagination ul li a.current,
+.pagination ul li a.current.disabled {
+  color: #ffffff;
+  background: #3a414b;
+}
+
+.pagination ul li a.disabled {
+  color: rgba(248, 244, 237, 0.5);
+}
+
 .pagination--pager {
   display: inline-flex;
   align-items: center;
@@ -773,6 +793,7 @@ html[data-theme="light"] .post-layout__tag:hover {
 }
 
 html[data-theme="light"] .post-card,
+html[data-theme="light"] .pagination ul li a,
 html[data-theme="light"] .pagination--pager,
 html[data-theme="light"] .subscribe-box,
 html[data-theme="light"] .page__comments,
@@ -782,6 +803,20 @@ html[data-theme="light"] .theme-toggle {
   border-color: rgba(44, 42, 40, 0.08);
   color: #1f1d1b;
   box-shadow: 0 18px 36px rgba(41, 35, 28, 0.08);
+}
+
+html[data-theme="light"] .pagination ul li a:hover {
+  color: #1f1d1b;
+}
+
+html[data-theme="light"] .pagination ul li a.current,
+html[data-theme="light"] .pagination ul li a.current.disabled {
+  color: #ffffff;
+  background: #3a414b;
+}
+
+html[data-theme="light"] .pagination ul li a.disabled {
+  color: rgba(31, 29, 27, 0.45);
 }
 
 html[data-theme="light"] .post-layout__footer,
