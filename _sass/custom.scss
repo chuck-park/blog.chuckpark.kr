@@ -1054,6 +1054,19 @@ html[data-theme="light"] .site-header__toggle-line {
     min-height: 360px;
   }
 
+  .page__comments {
+    padding: 1rem;
+  }
+
+  .page__comments #cusdis_thread {
+    padding: 0;
+    border-radius: 14px;
+  }
+
+  .page__comments #cusdis_thread iframe {
+    border-radius: 14px;
+  }
+
   .subscribe-box__form {
     flex-direction: column;
   }
