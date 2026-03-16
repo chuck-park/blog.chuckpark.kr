@@ -289,6 +289,9 @@ body.mobile-menu-open {
   grid-template-columns: minmax(260px, 340px) 1fr;
   gap: 1.5rem;
   align-items: stretch;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   padding: 1.25rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 28px;
@@ -298,6 +301,9 @@ body.mobile-menu-open {
 
 .post-card__media {
   display: block;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 20px;
   overflow: hidden;
@@ -316,6 +322,7 @@ body.mobile-menu-open {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
 }
 
 .post-card__meta {
