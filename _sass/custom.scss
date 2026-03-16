@@ -1020,11 +1020,19 @@ html[data-theme="light"] .site-header__toggle-line {
 
   .post-feed__list--related .post-card__title {
     font-size: 1rem;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .post-feed__list--related .post-card__excerpt {
     font-size: 0.87rem;
     line-height: 1.55;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .post-card__media {
