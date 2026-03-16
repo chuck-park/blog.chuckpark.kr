@@ -1,0 +1,7 @@
+{%- assign all_posts = site.posts | where_exp: "item", "item.hidden != true" -%}
+{%- for post in all_posts -%}
+  {%- assign post_year = post.date | date: "%Y" -%}
+  {%- if post_year == include.taxonomy -%}
+    {% include archive-single.html %}
+  {%- endif -%}
+{%- endfor -%}
