@@ -1,7 +1,32 @@
-{% if post.header.teaser %}
-  {% capture teaser %}{{ post.header.teaser }}{% endcapture %}
-{% else %}
-  {% assign teaser = site.teaser %}
+{% assign teaser = post.header.teaser | default: "" | strip %}
+{% assign first_image = "" %}
+{% assign markdown_image_fragment = "" %}
+{% assign html_image_fragment = "" %}
+{% assign thumbnail_src = "" %}
+
+{% if teaser == "" and post.content contains '![' %}
+  {% assign markdown_image_fragment = post.content | split: '![' | slice: 1, 1 | first %}
+  {% if markdown_image_fragment contains '](' %}
+    {% assign first_image = markdown_image_fragment | split: '](' | last | split: ')' | first | strip %}
+    {% if first_image contains ' "' %}
+      {% assign first_image = first_image | split: ' "' | first | strip %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% if first_image == "" and teaser == "" and post.content contains "<img" %}
+  {% assign html_image_fragment = post.content | split: '<img' | slice: 1, 1 | first %}
+  {% if html_image_fragment contains 'src="' %}
+    {% assign first_image = html_image_fragment | split: 'src="' | last | split: '"' | first | strip %}
+  {% elsif html_image_fragment contains "src='" %}
+    {% assign first_image = html_image_fragment | split: "src='" | last | split: "'" | first | strip %}
+  {% endif %}
+{% endif %}
+
+{% if teaser != "" %}
+  {% assign thumbnail_src = teaser %}
+{% elsif first_image != "" %}
+  {% assign thumbnail_src = first_image %}
 {% endif %}
 
 {% if post.id %}
@@ -10,21 +35,40 @@
   {% assign title = post.title %}
 {% endif %}
 
-<div class="{{ include.type | default: 'list' }}__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    {% if include.type == "grid" and teaser %}
-      <div class="archive__item-teaser">
-        <img src="{{ teaser | relative_url }}" alt="">
-      </div>
+<article class="post-card" itemscope itemtype="https://schema.org/CreativeWork">
+  <a class="post-card__media" href="{{ post.url | relative_url }}" rel="permalink">
+    {% if thumbnail_src != "" %}
+      {% if thumbnail_src contains '://' %}
+        <img src="{{ thumbnail_src }}" alt="{{ title | strip_html }}">
+      {% else %}
+        <img src="{{ thumbnail_src | relative_url }}" alt="{{ title | strip_html }}">
+      {% endif %}
+    {% else %}
+      <span class="post-card__placeholder"></span>
     {% endif %}
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+  </a>
+
+  <div class="post-card__content">
+    <div class="post-card__meta">
+      {% if post.date %}
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y년 %-m월 %-d일" }}</time>
+      {% endif %}
+      {% if post.categories and post.categories.size > 0 %}
+        <span class="post-card__meta-sep">·</span>
+        <span>{{ post.categories | first }}</span>
+      {% endif %}
+    </div>
+
+    <h2 class="post-card__title no_toc" itemprop="headline">
       {% if post.link %}
-        <a href="{{ post.link }}">{{ title }}</a> <a href="{{ post.url | relative_url }}" rel="permalink"><i class="fas fa-link" aria-hidden="true" title="permalink"></i><span class="sr-only">Permalink</span></a>
+        <a href="{{ post.link }}">{{ title }}</a>
       {% else %}
         <a href="{{ post.url | relative_url }}" rel="permalink">{{ title }}</a>
       {% endif %}
     </h2>
-    {% include page__meta.html type=include.type %}
-    {% if post.excerpt %}<p class="archive__item-excerpt" itemprop="description">{{ post.excerpt | markdownify | strip_html | truncate: 160 }}</p>{% endif %}
-  </article>
-</div>
+
+    {% if post.excerpt %}
+      <p class="post-card__excerpt" itemprop="description">{{ post.excerpt | markdownify | strip_html | truncate: 180 }}</p>
+    {% endif %}
+  </div>
+</article>

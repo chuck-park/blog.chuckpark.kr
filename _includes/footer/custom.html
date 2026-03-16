@@ -1,3 +1,65 @@
 <!-- start custom footer snippets -->
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toggle = document.querySelector('.site-header__toggle');
+    var nav = document.querySelector('.menu-main');
+    var themeToggle = document.querySelector('.theme-toggle');
+    var themeColorMeta = document.querySelector('meta[name="theme-color"]');
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('site-theme', theme);
+
+      if (themeToggle) {
+        themeToggle.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+      }
+
+      if (themeColorMeta) {
+        themeColorMeta.setAttribute('content', theme === 'light' ? '#f6f1e8' : '#0f1115');
+      }
+
+      if (window.refreshCusdisTheme) {
+        window.refreshCusdisTheme(theme);
+      }
+    }
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      });
+
+      applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+    }
+
+    if (!toggle || !nav) {
+      return;
+    }
+
+    function closeMenu() {
+      toggle.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+      document.body.classList.remove('mobile-menu-open');
+    }
+
+    toggle.addEventListener('click', function () {
+      var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      nav.classList.toggle('is-open', !isOpen);
+      document.body.classList.toggle('mobile-menu-open', !isOpen);
+    });
+
+    nav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeMenu);
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 900) {
+        closeMenu();
+      }
+    });
+  });
+</script>
+
 <!-- end custom footer snippets -->

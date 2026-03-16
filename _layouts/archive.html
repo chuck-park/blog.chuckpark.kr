@@ -2,25 +2,19 @@
 layout: default
 ---
 
-{% if page.header.overlay_color or page.header.overlay_image or page.header.image %}
-  {% include page__hero.html %}
-{% elsif page.header.video.id and page.header.video.provider %}
-  {% include page__hero_video.html %}
-{% endif %}
+<main id="main" class="site-main site-main--archive" role="main">
+  <div class="site-container">
+    <section class="archive-page">
+      <header class="archive-page__header">
+        <p class="archive-page__eyebrow">블로그</p>
+        <h1 id="page-title" class="archive-page__title">{{ page.title | default: site.title }}</h1>
+        {% assign archive_intro = page.content | strip %}
+        {% if archive_intro != "" %}
+          <div class="archive-page__description">{{ page.content | markdownify }}</div>
+        {% endif %}
+      </header>
 
-{% if page.url != "/" and site.breadcrumbs %}
-  {% unless paginator %}
-    {% include breadcrumbs.html %}
-  {% endunless %}
-{% endif %}
-
-<div id="main" role="main">
-  {% include sidebar.html %}
-
-  <div class="archive">
-    {% unless page.header.overlay_color or page.header.overlay_image %}
-      <h1 id="page-title" class="page__title">{{ page.title }}</h1>
-    {% endunless %}
-    {{ content }}
+      {{ content }}
+    </section>
   </div>
-</div>
+</main>

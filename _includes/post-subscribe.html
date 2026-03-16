@@ -29,7 +29,6 @@
         {{ buttondown.button_label | default: "이메일 구독" }}
       </button>
     </form>
-    <p class="subscribe-box__privacy">{{ site.subscribe.privacy_note | default: "이메일은 새 글 알림 용도로만 사용됩니다." }}</p>
   {% endif %}
 
   {% unless site.atom_feed.hide %}

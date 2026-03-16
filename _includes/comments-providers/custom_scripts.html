@@ -1,7 +1,11 @@
 {% if site.cusdis.app_id and site.cusdis.app_id != "" %}
-  <script async defer src="{{ site.cusdis.host | default: 'https://cusdis.com' }}/js/cusdis.es.js"></script>
   <script>
     (function () {
+      function getCusdisTheme(theme) {
+        var resolvedTheme = theme || document.documentElement.getAttribute('data-theme') || localStorage.getItem('site-theme') || 'dark';
+        return resolvedTheme === 'light' ? 'light' : 'dark';
+      }
+
       function resizeCusdisFrame() {
         var iframe = document.querySelector('#cusdis_thread iframe');
 
@@ -29,6 +33,25 @@
         }
       }
 
+      var thread = document.getElementById('cusdis_thread');
+
+      if (thread) {
+        thread.setAttribute('data-theme', getCusdisTheme());
+      }
+
+      window.refreshCusdisTheme = function (theme) {
+        var nextTheme = getCusdisTheme(theme);
+        var thread = document.getElementById('cusdis_thread');
+
+        if (thread) {
+          thread.setAttribute('data-theme', nextTheme);
+        }
+
+        if (window.CUSDIS && typeof window.CUSDIS.setTheme === 'function') {
+          window.CUSDIS.setTheme(nextTheme);
+        }
+      };
+
       window.addEventListener('load', function () {
         resizeCusdisFrame();
         setTimeout(resizeCusdisFrame, 500);
@@ -43,4 +66,5 @@
       window.addEventListener('resize', resizeCusdisFrame);
     })();
   </script>
+  <script async defer src="{{ site.cusdis.host | default: 'https://cusdis.com' }}/js/cusdis.es.js"></script>
 {% endif %}

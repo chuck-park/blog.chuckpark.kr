@@ -2,99 +2,110 @@
 layout: default
 ---
 
-{% if page.header.overlay_color or page.header.overlay_image or page.header.image %}
-  {% include page__hero.html %}
-{% elsif page.header.video.id and page.header.video.provider %}
-  {% include page__hero_video.html %}
-{% endif %}
-
-{% if page.url != "/" and site.breadcrumbs %}
-  {% unless paginator %}
-    {% include breadcrumbs.html %}
-  {% endunless %}
-{% endif %}
-
-<div id="main" role="main">
-  {% include sidebar.html %}
-
-  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+<main id="main" class="site-main site-main--single" role="main">
+  <article class="post-layout h-entry" itemscope itemtype="https://schema.org/CreativeWork">
     {% if page.title %}<meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
     {% if page.excerpt %}<meta itemprop="description" content="{{ page.excerpt | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
     {% if page.date %}<meta itemprop="datePublished" content="{{ page.date | date_to_xmlschema }}">{% endif %}
     {% if page.last_modified_at %}<meta itemprop="dateModified" content="{{ page.last_modified_at | date_to_xmlschema }}">{% endif %}
 
-    <div class="page__inner-wrap">
-      {% unless page.header.overlay_color or page.header.overlay_image %}
-        <header>
-          {% if page.title %}<h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="{{ page.url | absolute_url }}" class="u-url" itemprop="url">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</a>
-          </h1>{% endif %}
-          {% include page__meta.html %}
-        </header>
-      {% endunless %}
+    <div class="site-container site-container--narrow">
+      <header class="post-layout__header">
+        <div class="post-layout__meta-row">
+          {% if page.date %}
+            <time class="post-layout__date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %-m월 %-d일" }}</time>
+          {% endif %}
+          {% if page.categories and page.categories.size > 0 %}
+            <div class="post-layout__categories">
+              {% for category in page.categories %}
+                <span class="post-layout__category">{{ category }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
 
-      <section class="page__content e-content" itemprop="text">
-        {% if page.toc %}
-          <aside class="sidebar__right {% if page.toc_sticky %}sticky{% endif %}">
-            <nav class="toc">
-              <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "On this page" }}</h4></header>
-              {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
-            </nav>
-          </aside>
+        {% if page.title %}
+          <h1 id="page-title" class="post-layout__title p-name" itemprop="headline">
+            <a href="{{ page.url | absolute_url }}" class="u-url" itemprop="url">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</a>
+          </h1>
         {% endif %}
+
+      </header>
+
+      {% if page.header.overlay_color or page.header.overlay_image or page.header.image %}
+        <div class="post-layout__hero">
+          {% include page__hero.html %}
+        </div>
+      {% elsif page.header.video.id and page.header.video.provider %}
+        <div class="post-layout__hero">
+          {% include page__hero_video.html %}
+        </div>
+      {% endif %}
+
+      <section class="post-layout__content page__content e-content" itemprop="text">
         {{ content }}
-        {% if page.link %}<div><a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[site.locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
+        {% if page.link %}
+          <div class="post-layout__link">
+            <a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[site.locale].ext_link_label | default: "원문 보기" }}</a>
+          </div>
+        {% endif %}
       </section>
 
-      <footer class="page__meta">
-        {% if site.data.ui-text[site.locale].meta_label %}
-          <h4 class="page__meta-title">{{ site.data.ui-text[site.locale].meta_label }}</h4>
+      <footer class="post-layout__footer">
+        {% if page.tags and page.tags.size > 0 %}
+          <div class="post-layout__tags">
+            {% for tag in page.tags %}
+              <a href="{{ '/tags/' | relative_url }}#{{ tag | slugify }}" class="post-layout__tag">#{{ tag }}</a>
+            {% endfor %}
+          </div>
         {% endif %}
-        {% include page__taxonomy.html %}
-        {% include page__date.html %}
+
+        {% if page.share %}
+          <div class="post-layout__share">
+            {% include social-share.html %}
+          </div>
+        {% endif %}
       </footer>
-
-      {% if page.share %}{% include social-share.html %}{% endif %}
-
-      {% include post_pagination.html %}
     </div>
-
   </article>
 
   {% if page.collection == 'posts' %}
     <section class="page__subscribe-wrap" aria-label="최신 글 구독">
-      <div class="page__subscribe">
-        {% include post-subscribe.html %}
+      <div class="site-container site-container--narrow">
+        <div class="page__subscribe">
+          {% include post-subscribe.html %}
+        </div>
       </div>
     </section>
   {% endif %}
 
   {% if site.comments.provider and page.comments %}
-    {% include comments.html %}
+    <div class="site-container site-container--narrow">
+      {% include comments.html %}
+    </div>
   {% endif %}
 
-  {% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
-  {% if page.id and page.related and site.related_posts.size > 0 %}
-    <div class="page__related">
-      <h2 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" }}</h2>
-      <div class="grid__wrapper">
-        {% for post in site.related_posts limit:4 %}
-          {% include archive-single.html type="grid" %}
-        {% endfor %}
+  {% if page.id and page.related %}
+    <section class="page__related-wrap">
+      <div class="site-container site-container--narrow">
+        <div class="page__related">
+          <h2 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "관련 글" }}</h2>
+          <div class="post-feed__list post-feed__list--compact post-feed__list--related">
+            {% assign related_posts = site.related_posts | default: site.posts %}
+            {% assign shown = 0 %}
+            {% for post in related_posts %}
+              {% if post.id == page.id %}
+                {% continue %}
+              {% endif %}
+              {% include archive-single.html %}
+              {% assign shown = shown | plus: 1 %}
+              {% if shown >= 2 %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
       </div>
-    </div>
-  {% comment %}<!-- otherwise show recent posts if no related when `related: true` -->{% endcomment %}
-  {% elsif page.id and page.related %}
-    <div class="page__related">
-      <h2 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" }}</h2>
-      <div class="grid__wrapper">
-        {% for post in site.posts limit:4 %}
-          {% if post.id == page.id %}
-            {% continue %}
-          {% endif %}
-          {% include archive-single.html type="grid" %}
-        {% endfor %}
-      </div>
-    </div>
+    </section>
   {% endif %}
-</div>
+</main>

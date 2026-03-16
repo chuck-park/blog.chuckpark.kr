@@ -10,4 +10,11 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 
+<script>
+  (function () {
+    var savedTheme = localStorage.getItem('site-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  })();
+</script>
+
 <!-- end custom head snippets -->
