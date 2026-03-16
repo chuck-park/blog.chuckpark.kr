@@ -330,7 +330,8 @@ body.mobile-menu-open {
   font-size: 0.88rem;
 }
 
-.post-card__category {
+.post-card__category,
+.post-card__category:visited {
   color: inherit;
   text-decoration: none;
 }
@@ -374,7 +375,8 @@ body.mobile-menu-open {
   margin-top: 1rem;
 }
 
-.post-card__tag {
+.post-card__tag,
+.post-card__tag:visited {
   display: inline-flex;
   align-items: center;
   min-height: 2rem;
@@ -842,7 +844,8 @@ html[data-theme="light"] .taxonomy__index a.is-active {
   color: #1f1d1b;
 }
 
-html[data-theme="light"] .post-card__tag {
+html[data-theme="light"] .post-card__tag,
+html[data-theme="light"] .post-card__tag:visited {
   background: rgba(42, 35, 25, 0.06);
   border-color: rgba(42, 35, 25, 0.12);
   color: rgba(53, 49, 44, 0.86);
