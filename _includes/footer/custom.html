@@ -50,6 +50,20 @@
       document.body.classList.toggle('mobile-menu-open', !isOpen);
     });
 
+    document.addEventListener('click', function (event) {
+      var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+      if (!isOpen) {
+        return;
+      }
+
+      if (nav.contains(event.target) || toggle.contains(event.target)) {
+        return;
+      }
+
+      closeMenu();
+    });
+
     nav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', closeMenu);
     });
