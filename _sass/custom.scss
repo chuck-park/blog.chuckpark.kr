@@ -1005,7 +1005,7 @@ html[data-theme="light"] .site-header__toggle-line {
   }
 
   .post-feed__list--related {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 0.9rem;
   }
 
