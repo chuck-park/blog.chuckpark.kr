@@ -71,5 +71,14 @@
     {% if post.excerpt %}
       <p class="post-card__excerpt" itemprop="description">{{ post.excerpt | markdownify | strip_html | truncate: 180 }}</p>
     {% endif %}
+
+    {% if post.tags and post.tags.size > 0 %}
+      <div class="post-card__tags">
+        {% for tag in post.tags limit: 3 %}
+          {% assign tag_slug = site.data.tag_slugs[tag] | default: tag | slugify %}
+          <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}" class="post-card__tag">#{{ tag }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 </article>
