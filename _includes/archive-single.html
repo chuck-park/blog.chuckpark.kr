@@ -55,8 +55,10 @@
         <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y년 %-m월 %-d일" }}</time>
       {% endif %}
       {% if post.categories and post.categories.size > 0 %}
+        {% assign category_name = post.categories | first %}
+        {% assign category_slug = site.data.category_slugs[category_name] | default: category_name | slugify %}
         <span class="post-card__meta-sep">·</span>
-        <span>{{ post.categories | first }}</span>
+        <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="post-card__category">{{ category_name }}</a>
       {% endif %}
     </div>
 

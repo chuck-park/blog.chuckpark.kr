@@ -23,6 +23,11 @@ if ! rg -q '/categories/product/' "_site/categories/index.html"; then
   exit 1
 fi
 
+if ! rg -q '/categories/product/' "_site/index.html"; then
+  echo "archive cards should link categories to category detail pages"
+  exit 1
+fi
+
 if ! rg -q '>All<' "_site/year-archive/index.html"; then
   echo "year archive index should include the All option"
   exit 1
