@@ -318,29 +318,6 @@ body.mobile-menu-open {
   display: block;
 }
 
-.post-card__fallback {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  padding: 1.4rem;
-  align-items: flex-end;
-  background:
-    radial-gradient(circle at top right, rgba(245, 158, 11, 0.22), transparent 42%),
-    linear-gradient(135deg, #20242c, #12151b);
-}
-
-.post-card__fallback-title {
-  display: -webkit-box;
-  overflow: hidden;
-  color: #f8f4ed;
-  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
-  line-height: 1.35;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
 .post-card__content {
   display: flex;
   flex-direction: column;
@@ -829,16 +806,6 @@ html[data-theme="light"] .site-footer__links a:hover,
 html[data-theme="light"] .site-footer__social a:hover,
 html[data-theme="light"] .post-layout__tag:hover,
 html[data-theme="light"] .taxonomy__index a.is-active {
-  color: #1f1d1b;
-}
-
-html[data-theme="light"] .post-card__fallback {
-  background:
-    radial-gradient(circle at top right, rgba(148, 163, 184, 0.24), transparent 42%),
-    linear-gradient(135deg, #e8ddd0, #f5efe7);
-}
-
-html[data-theme="light"] .post-card__fallback-title {
   color: #1f1d1b;
 }
 

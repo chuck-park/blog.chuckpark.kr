@@ -3,6 +3,7 @@
 {% assign markdown_image_fragment = "" %}
 {% assign html_image_fragment = "" %}
 {% assign thumbnail_src = "" %}
+{% assign fallback_thumbnail_src = "/assets/images/inkframe-post-placeholder.svg" %}
 
 {% if teaser == "" and post.content contains '![' %}
   {% assign markdown_image_fragment = post.content | split: '![' | slice: 1, 1 | first %}
@@ -44,9 +45,7 @@
         <img src="{{ thumbnail_src | relative_url }}" alt="{{ title | strip_html }}">
       {% endif %}
     {% else %}
-      <span class="post-card__fallback" aria-hidden="true">
-        <span class="post-card__fallback-title">{{ title | strip_html }}</span>
-      </span>
+      <img src="{{ fallback_thumbnail_src | relative_url }}" alt="{{ title | strip_html }}">
     {% endif %}
   </a>
 
