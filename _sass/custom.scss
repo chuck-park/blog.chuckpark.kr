@@ -350,6 +350,15 @@ body.mobile-menu-open {
   line-height: 1.75;
 }
 
+.taxonomy__index a.is-active {
+  color: #f8f4ed;
+  border-bottom-color: rgba(245, 158, 11, 0.6);
+}
+
+.taxonomy__default {
+  margin-top: 2.5rem;
+}
+
 .pagination {
   margin-top: 2rem;
   display: flex;
@@ -788,7 +797,8 @@ html[data-theme="light"] .menu-main ul li.active > a,
 html[data-theme="light"] .post-card__title a:hover,
 html[data-theme="light"] .site-footer__links a:hover,
 html[data-theme="light"] .site-footer__social a:hover,
-html[data-theme="light"] .post-layout__tag:hover {
+html[data-theme="light"] .post-layout__tag:hover,
+html[data-theme="light"] .taxonomy__index a.is-active {
   color: #1f1d1b;
 }
 

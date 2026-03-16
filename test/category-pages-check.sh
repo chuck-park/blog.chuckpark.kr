@@ -6,8 +6,8 @@ bundle exec jekyll build >/tmp/category-pages-check.log 2>&1
 test -f "_site/categories/index.html"
 test -f "_site/categories/product/index.html"
 
-if rg -q 'taxonomy__section' "_site/categories/index.html"; then
-  echo "categories index should not render full taxonomy sections"
+if ! rg -q 'entries-list|post-card' "_site/categories/index.html"; then
+  echo "categories index should render the default category posts"
   exit 1
 fi
 

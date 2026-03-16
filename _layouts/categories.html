@@ -2,17 +2,31 @@
 layout: archive
 ---
 
+{% assign categories_sorted = site.categories | sort %}
+{% assign default_category = categories_sorted.first %}
+{% if default_category %}
+  {% assign default_category_name = default_category[0] %}
+{% endif %}
+
 {{ content }}
 
 <ul class="taxonomy__index">
-  {% assign categories_sorted = site.categories | sort %}
   {% for category in categories_sorted %}
     {% assign category_name = category[0] %}
     {% assign category_slug = site.data.category_slugs[category_name] | default: category_name | slugify %}
     <li>
-      <a href="{{ site.category_archive.path | append: category_slug | append: '/' | relative_url }}">
+      <a href="{{ site.category_archive.path | append: category_slug | append: '/' | relative_url }}"{% if forloop.first %} class="is-active"{% endif %}>
         <strong>{{ category_name }}</strong> <span class="taxonomy__count">{{ category[1].size }}</span>
       </a>
     </li>
   {% endfor %}
 </ul>
+
+{% if default_category_name %}
+  <section class="taxonomy__default">
+    <h2 class="archive__subtitle">{{ default_category_name }}</h2>
+    <div class="entries-list">
+      {% include posts-category.html taxonomy=default_category_name type='list' %}
+    </div>
+  </section>
+{% endif %}
