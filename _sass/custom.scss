@@ -987,11 +987,12 @@ html[data-theme="light"] .site-header__toggle-line {
   .menu-main {
     position: absolute;
     top: calc(100% + 8px);
-    left: 0;
+    left: auto;
     right: 0;
     z-index: 20;
     display: none;
-    width: 100%;
+    width: auto;
+    min-width: 180px;
     padding: 1rem 1.1rem;
     border: 0;
     border-radius: 20px;
@@ -1004,21 +1005,22 @@ html[data-theme="light"] .site-header__toggle-line {
   }
 
   .menu-main ul {
-    width: 100%;
+    width: auto;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
     gap: 0.9rem;
   }
 
   .menu-main ul li {
-    width: 100%;
+    width: auto;
     margin-right: 0;
   }
 
   .menu-main ul li > a {
     display: block;
-    width: 100%;
+    width: auto;
     line-height: 1.4;
+    text-align: right;
   }
 
   .post-card {
