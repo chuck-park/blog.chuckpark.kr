@@ -21,6 +21,10 @@ body {
   min-height: calc(100vh - 220px);
 }
 
+#main {
+  max-width: 100%;
+}
+
 .container {
   box-sizing: border-box;
   width: 100%;
