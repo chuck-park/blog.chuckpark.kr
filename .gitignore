@@ -28,3 +28,4 @@ _drafts/.obsidian/
 .sass-cache
 _asset_bundler_cache
 _site
+.playwright-cli/
