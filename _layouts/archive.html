@@ -12,7 +12,9 @@ layout: default
               <div class="row align-items-center">
                 <div class="col-12 col-md-10">
                   <div class="listing-page__header">
-                    <p class="listing-page__eyebrow">블로그</p>
+                    {% if page.layout == "home" %}
+                      <p class="listing-page__eyebrow">블로그</p>
+                    {% endif %}
                     <div class="title-heading">
                       <h1 id="page-title" class="listing-page__title">{{ page.title | default: site.title }}</h1>
                     </div>
