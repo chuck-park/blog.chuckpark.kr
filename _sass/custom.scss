@@ -1089,6 +1089,10 @@ html[data-theme="light"] .site-header__toggle-line {
   .post-feed .col-lg-9 {
     width: 100%;
   }
+
+  .page__related-wrap .site-container--narrow {
+    max-width: 1120px;
+  }
 }
 
 @media (min-width: 768px) {
