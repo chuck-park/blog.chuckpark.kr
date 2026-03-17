@@ -7,25 +7,33 @@ layout: archive
 {% assign all_posts = site.posts | where_exp: "item", "item.hidden != true" %}
 {% assign postsInYear = all_posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
 
-<ul class="taxonomy__index">
-  <li>
-    <a href="{{ '/year-archive/' | relative_url }}" class="is-active">
-      <strong>All</strong> <span class="taxonomy__count">{{ all_posts | size }}</span>
-    </a>
-  </li>
-  {% for year in postsInYear %}
-    <li>
-      <a href="{{ '/year-archive/' | append: year.name | append: '/' | relative_url }}">
-        <strong>{{ year.name }}</strong> <span class="taxonomy__count">{{ year.items | size }}</span>
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+<div class="section pt-0">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-9">
+        <ul class="taxonomy__index">
+          <li>
+            <a href="{{ '/year-archive/' | relative_url }}" class="is-active">
+              <strong>All</strong> <span class="taxonomy__count">{{ all_posts | size }}</span>
+            </a>
+          </li>
+          {% for year in postsInYear %}
+            <li>
+              <a href="{{ '/year-archive/' | append: year.name | append: '/' | relative_url }}">
+                <strong>{{ year.name }}</strong> <span class="taxonomy__count">{{ year.items | size }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
 
-{% assign entries_layout = page.entries_layout | default: 'list' %}
-<section class="taxonomy__default">
-  <h2 class="archive__subtitle">All</h2>
-  <div class="entries-{{ entries_layout }}">
-    {% include posts-all.html type=entries_layout %}
+        {% assign entries_layout = page.entries_layout | default: 'list' %}
+        <section class="taxonomy__default">
+          <h2 class="archive__subtitle">All</h2>
+          <div class="entries-{{ entries_layout }}">
+            {% include posts-all.html type=entries_layout %}
+          </div>
+        </section>
+      </div>
+    </div>
   </div>
-</section>
+</div>

@@ -6,26 +6,34 @@ layout: archive
 
 {{ content }}
 
-<ul class="taxonomy__index">
-  <li>
-    <a href="{{ '/categories/' | relative_url }}" class="is-active">
-      <strong>All</strong> <span class="taxonomy__count">{{ site.posts | where_exp: "item", "item.hidden != true" | size }}</span>
-    </a>
-  </li>
-  {% for category in categories_sorted %}
-    {% assign category_name = category[0] %}
-    {% assign category_slug = site.data.category_slugs[category_name] | default: category_name | slugify %}
-    <li>
-      <a href="{{ site.category_archive.path | append: category_slug | append: '/' | relative_url }}">
-        <strong>{{ category_name }}</strong> <span class="taxonomy__count">{{ category[1].size }}</span>
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+<div class="section pt-0">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-9">
+        <ul class="taxonomy__index">
+          <li>
+            <a href="{{ '/categories/' | relative_url }}" class="is-active">
+              <strong>All</strong> <span class="taxonomy__count">{{ site.posts | where_exp: "item", "item.hidden != true" | size }}</span>
+            </a>
+          </li>
+          {% for category in categories_sorted %}
+            {% assign category_name = category[0] %}
+            {% assign category_slug = site.data.category_slugs[category_name] | default: category_name | slugify %}
+            <li>
+              <a href="{{ site.category_archive.path | append: category_slug | append: '/' | relative_url }}">
+                <strong>{{ category_name }}</strong> <span class="taxonomy__count">{{ category[1].size }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
 
-<section class="taxonomy__default">
-  <h2 class="archive__subtitle">All</h2>
-  <div class="entries-list">
-    {% include posts-all.html type='list' %}
+        <section class="taxonomy__default">
+          <h2 class="archive__subtitle">All</h2>
+          <div class="entries-list">
+            {% include posts-all.html type='list' %}
+          </div>
+        </section>
+      </div>
+    </div>
   </div>
-</section>
+</div>

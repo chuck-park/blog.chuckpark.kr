@@ -8,16 +8,26 @@ layout: archive
   {% assign posts = site.posts %}
 {% endif %}
 
-<section class="post-feed">
-  <div class="post-feed__header">
-    <h2 class="post-feed__title">{{ site.data.ui-text[site.locale].recent_posts | default: "최신 글" }}</h2>
-  </div>
+<div class="section pt-0">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <section class="post-feed">
+          <div class="post-feed__header">
+            <h2 class="post-feed__title">{{ site.data.ui-text[site.locale].recent_posts | default: "최신 글" }}</h2>
+          </div>
 
-  <div class="post-feed__list">
-  {% for post in posts %}
-    {% include archive-single.html %}
-  {% endfor %}
+          <div class="row">
+            {% for post in posts %}
+              <div class="col-12 col-lg-9 mb-5">
+                {% include archive-single.html %}
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 </div>
-</section>
 
 {% include paginator.html %}

@@ -6,26 +6,34 @@ layout: archive
 
 {{ content }}
 
-<ul class="taxonomy__index">
-  <li>
-    <a href="{{ '/tags/' | relative_url }}" class="is-active">
-      <strong>All</strong> <span class="taxonomy__count">{{ site.posts | where_exp: "item", "item.hidden != true" | size }}</span>
-    </a>
-  </li>
-  {% for tag in tags_sorted %}
-    {% assign tag_name = tag[0] %}
-    {% assign tag_slug = site.data.tag_slugs[tag_name] | default: tag_name | slugify %}
-    <li>
-      <a href="{{ site.tag_archive.path | append: tag_slug | append: '/' | relative_url }}">
-        <strong>{{ tag_name }}</strong> <span class="taxonomy__count">{{ tag[1].size }}</span>
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+<div class="section pt-0">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-9">
+        <ul class="taxonomy__index">
+          <li>
+            <a href="{{ '/tags/' | relative_url }}" class="is-active">
+              <strong>All</strong> <span class="taxonomy__count">{{ site.posts | where_exp: "item", "item.hidden != true" | size }}</span>
+            </a>
+          </li>
+          {% for tag in tags_sorted %}
+            {% assign tag_name = tag[0] %}
+            {% assign tag_slug = site.data.tag_slugs[tag_name] | default: tag_name | slugify %}
+            <li>
+              <a href="{{ site.tag_archive.path | append: tag_slug | append: '/' | relative_url }}">
+                <strong>{{ tag_name }}</strong> <span class="taxonomy__count">{{ tag[1].size }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
 
-<section class="taxonomy__default">
-  <h2 class="archive__subtitle">All</h2>
-  <div class="entries-list">
-    {% include posts-all.html type='list' %}
+        <section class="taxonomy__default">
+          <h2 class="archive__subtitle">All</h2>
+          <div class="entries-list">
+            {% include posts-all.html type='list' %}
+          </div>
+        </section>
+      </div>
+    </div>
   </div>
-</section>
+</div>
