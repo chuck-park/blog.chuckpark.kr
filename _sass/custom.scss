@@ -261,16 +261,16 @@ body.mobile-menu-open {
   padding: 3.5rem 0 5rem;
 }
 
-.site-main--archive {
+.site-main--listing {
   width: 100%;
   max-width: 100%;
 }
 
-.archive-page__header {
+.listing-page__header {
   margin-bottom: 3rem;
 }
 
-.archive-page__eyebrow {
+.listing-page__eyebrow {
   margin: 0 0 0.85rem;
   color: #f59e0b;
   font-size: 0.82rem;
@@ -279,7 +279,7 @@ body.mobile-menu-open {
   text-transform: uppercase;
 }
 
-.archive-page__title {
+.listing-page__title {
   margin: 0;
   color: #f8f4ed;
   max-width: 13ch;
@@ -301,7 +301,7 @@ body.mobile-menu-open {
   text-wrap: balance;
 }
 
-.archive-page__description {
+.listing-page__description {
   margin-top: 1.25rem;
   max-width: 48rem;
   color: #b6b1a9;
@@ -309,7 +309,7 @@ body.mobile-menu-open {
   line-height: 1.8;
 }
 
-.archive-page__description > *:first-child {
+.listing-page__description > *:first-child {
   margin-top: 0;
 }
 
@@ -895,7 +895,7 @@ html[data-theme="light"] .header {
 html[data-theme="light"] .site-brand,
 html[data-theme="light"] .site-brand:hover,
 html[data-theme="light"] .site-brand__text,
-html[data-theme="light"] .archive-page__title,
+html[data-theme="light"] .listing-page__title,
 html[data-theme="light"] .page__title,
 html[data-theme="light"] .post-feed__title,
 html[data-theme="light"] .post-card__title a,
@@ -912,7 +912,7 @@ html[data-theme="light"] .site-footer__brand a {
 }
 
 html[data-theme="light"] .menu-main ul li > a,
-html[data-theme="light"] .archive-page__description,
+html[data-theme="light"] .listing-page__description,
 html[data-theme="light"] .post-card__excerpt,
 html[data-theme="light"] .subscribe-box__description,
 html[data-theme="light"] .subscribe-box__privacy,
@@ -1220,7 +1220,7 @@ html[data-theme="light"] .site-header__toggle-line {
     letter-spacing: -0.025em;
   }
 
-  .archive-page__title,
+  .listing-page__title,
   .page__title {
     max-width: 100%;
     font-size: clamp(1.95rem, 8vw, 3rem);

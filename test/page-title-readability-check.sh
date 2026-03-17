@@ -6,8 +6,8 @@ bundle exec jekyll build >/tmp/page-title-readability-check.log 2>&1
 css_file="_site/assets/css/main.css"
 test -f "$css_file"
 
-if ! rg -q '\.archive-page__title[^}]*max-width' "$css_file"; then
-  echo "archive page title should constrain line width"
+if ! rg -q '\.listing-page__title[^}]*max-width' "$css_file"; then
+  echo "listing page title should constrain line width"
   exit 1
 fi
 
