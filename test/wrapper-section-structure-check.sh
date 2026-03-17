@@ -13,6 +13,12 @@ if wrapper not in html:
     raise SystemExit("wrapper should wrap the page content")
 
 after = html.split(wrapper, 1)[1]
+if '<div class="initial-content">' in after:
+    raise SystemExit("wrapper should no longer have an initial-content wrapper")
+
+if '<main id="main"' not in after:
+    raise SystemExit("wrapper should contain main directly")
+
 section_count = after.count('<div class="section')
 if section_count < 2:
     raise SystemExit("wrapper should contain multiple section blocks")

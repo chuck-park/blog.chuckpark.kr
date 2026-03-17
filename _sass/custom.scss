@@ -17,6 +17,8 @@ body {
 
 .wrapper {
   position: relative;
+  flex: 1 0 auto;
+  min-height: calc(100vh - 220px);
 }
 
 .container {
@@ -70,10 +72,6 @@ body {
 
 a {
   transition: color 0.2s ease, opacity 0.2s ease;
-}
-
-.initial-content {
-  min-height: calc(100vh - 220px);
 }
 
 .site-container {
