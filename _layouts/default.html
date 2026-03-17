@@ -18,11 +18,11 @@
   {% assign body_classes = "layout--" | append: current_layout %}
   {% assign listing_layouts = "home,archive,posts,categories,tags" | split: "," %}
   {% if listing_layouts contains current_layout %}
-    {% assign body_classes = body_classes | append: " page page-blog has-static-header" %}
+    {% assign body_classes = body_classes | append: " site-page site-page-blog has-static-header" %}
   {% elsif current_layout == "single" %}
-    {% assign body_classes = body_classes | append: " page page-post" %}
+    {% assign body_classes = body_classes | append: " site-page site-page-post" %}
   {% else %}
-    {% assign body_classes = body_classes | append: " page" %}
+    {% assign body_classes = body_classes | append: " site-page" %}
   {% endif %}
   {% if page.classes or layout.classes %}
     {% assign body_classes = body_classes | append: " " | append: page.classes | default: layout.classes | join: " " %}

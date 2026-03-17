@@ -9,8 +9,8 @@ from pathlib import Path
 html = Path("_site/index.html").read_text(encoding="utf-8")
 css = Path("_site/assets/css/main.css").read_text(encoding="utf-8")
 
-if '<body class="layout--home page page-blog has-static-header">' not in html:
-    raise SystemExit("home page body should include page page-blog has-static-header classes")
+if '<body class="layout--home site-page site-page-blog has-static-header">' not in html:
+    raise SystemExit("home page body should include site-page site-page-blog has-static-header classes")
 
 if "body.has-static-header .header{position:relative;top:auto}" not in css.replace("\n", ""):
     raise SystemExit("static header pages should reset header positioning")
