@@ -1081,6 +1081,10 @@ html[data-theme="light"] .site-header__toggle-line {
     flex: 0 0 auto;
     width: 75%;
   }
+
+  .post-feed .col-lg-9 {
+    width: 100%;
+  }
 }
 
 @media (min-width: 768px) {
