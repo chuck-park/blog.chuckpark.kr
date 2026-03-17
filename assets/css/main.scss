@@ -4,6 +4,6 @@
 
 @charset "utf-8";
 
-@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
-@import "minimal-mistakes"; // main partials
+@import "inkframe/skins/{{ site.inkframe_skin | default: 'default' }}"; // skin
+@import "inkframe"; // Inkframe base
 @import "custom";
