@@ -19,8 +19,10 @@
     {% include_cached browser-upgrade.html %}
     {% include_cached masthead.html %}
 
-    <div class="initial-content">
-      {{ content }}
+    <div id="wrapper" class="wrapper">
+      <div class="initial-content">
+        {{ content }}
+      </div>
     </div>
 
     {% if site.search == true %}

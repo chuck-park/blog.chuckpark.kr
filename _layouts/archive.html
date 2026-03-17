@@ -7,20 +7,28 @@ layout: default
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <section class="archive-page">
-            <header class="archive-page__header">
-              <p class="archive-page__eyebrow">블로그</p>
-              <h1 id="page-title" class="archive-page__title">{{ page.title | default: site.title }}</h1>
+          <div class="title">
+            <div class="col-12">
+              <div class="row align-items-center">
+                <div class="col-12 col-md-10">
+                  <div class="archive-page__header">
+                    <p class="archive-page__eyebrow">블로그</p>
+                    <div class="title-heading">
+                      <h1 id="page-title" class="archive-page__title">{{ page.title | default: site.title }}</h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
               {% assign archive_intro = page.content | strip %}
               {% if archive_intro != "" %}
                 <div class="archive-page__description">{{ page.content | markdownify }}</div>
               {% endif %}
-            </header>
-
-            {{ content }}
-          </section>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  {{ content }}
 </main>
