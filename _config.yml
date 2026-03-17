@@ -23,7 +23,7 @@ description              : "chuck park's blog"
 custom_theme_name        : "Inkframe"
 url                      : "https://blog.chuckpark.kr"
 baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : "chuck-park/chuck-park.github.io"
+repository               : "chuck-park/blog.chuckpark.kr"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
@@ -321,3 +321,4 @@ defaults:
 
 
 date_format: "%Y-%m-%d"
+
