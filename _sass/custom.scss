@@ -1249,6 +1249,7 @@ html[data-theme="light"] .site-header__toggle-line {
   }
 
   .post-layout__title {
+    width: 100%;
     max-width: 100%;
     font-size: clamp(1.75rem, 7.6vw, 2.65rem);
     line-height: 1.12;
