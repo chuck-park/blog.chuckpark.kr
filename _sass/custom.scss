@@ -211,9 +211,21 @@ body.mobile-menu-open {
 .archive-page__title {
   margin: 0;
   color: #f8f4ed;
-  font-size: clamp(2.4rem, 4vw, 4rem);
-  line-height: 1.02;
-  letter-spacing: -0.04em;
+  max-width: 13ch;
+  font-size: clamp(2.2rem, 3.8vw, 3.7rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.page__title {
+  margin: 0;
+  max-width: 14ch;
+  color: #f8f4ed;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .archive-page__description {
@@ -484,9 +496,11 @@ body.mobile-menu-open {
 .post-layout__title {
   margin: 0;
   color: #f8f4ed;
-  font-size: clamp(2.6rem, 5vw, 4.8rem);
-  line-height: 0.97;
-  letter-spacing: -0.055em;
+  max-width: 14ch;
+  font-size: clamp(2.35rem, 4.6vw, 4.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 .post-layout__title a {
@@ -805,6 +819,7 @@ html[data-theme="light"] .site-brand,
 html[data-theme="light"] .site-brand:hover,
 html[data-theme="light"] .site-brand__text,
 html[data-theme="light"] .archive-page__title,
+html[data-theme="light"] .page__title,
 html[data-theme="light"] .post-feed__title,
 html[data-theme="light"] .post-card__title a,
 html[data-theme="light"] .post-layout__title,
@@ -1093,7 +1108,18 @@ html[data-theme="light"] .site-header__toggle-line {
   }
 
   .post-layout__title {
-    font-size: clamp(2rem, 11vw, 3.2rem);
+    max-width: 100%;
+    font-size: clamp(1.95rem, 8.8vw, 3rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+  }
+
+  .archive-page__title,
+  .page__title {
+    max-width: 100%;
+    font-size: clamp(1.95rem, 8vw, 3rem);
+    line-height: 1.14;
+    letter-spacing: -0.02em;
   }
 
   .post-layout__content h2 {
