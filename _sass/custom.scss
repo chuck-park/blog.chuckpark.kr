@@ -89,7 +89,7 @@ a {
 
 .site-container--narrow {
   width: 100%;
-  max-width: 808px;
+  max-width: 896px;
   padding-inline: 24px;
 }
 
@@ -597,6 +597,10 @@ body.mobile-menu-open {
   line-height: 1.08;
   letter-spacing: -0.035em;
   text-wrap: balance;
+}
+
+.post-layout__title.p-name {
+  max-width: 100%;
 }
 
 .post-layout__title a {
