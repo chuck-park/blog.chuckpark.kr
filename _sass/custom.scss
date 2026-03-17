@@ -101,6 +101,15 @@ a {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+body.has-static-header .header {
+  position: relative;
+  top: auto;
+}
+
+body.has-static-header .wrapper {
+  padding-top: 0;
+}
+
 .site-header__inner {
   display: flex;
   align-items: center;
