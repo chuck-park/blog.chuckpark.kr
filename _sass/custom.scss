@@ -212,7 +212,7 @@ body.mobile-menu-open {
   margin: 0;
   color: #f8f4ed;
   max-width: 13ch;
-  font-size: clamp(2.2rem, 3.8vw, 3.7rem);
+  font-size: clamp(2rem, 3.4vw, 3.3rem);
   line-height: 1.1;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -222,7 +222,7 @@ body.mobile-menu-open {
   margin: 0;
   max-width: 14ch;
   color: #f8f4ed;
-  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  font-size: clamp(2rem, 3.5vw, 3.4rem);
   line-height: 1.12;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -497,7 +497,7 @@ body.mobile-menu-open {
   margin: 0;
   color: #f8f4ed;
   max-width: 14ch;
-  font-size: clamp(2.35rem, 4.6vw, 4.3rem);
+  font-size: clamp(2.15rem, 4.1vw, 3.8rem);
   line-height: 1.08;
   letter-spacing: -0.035em;
   text-wrap: balance;
@@ -530,11 +530,11 @@ body.mobile-menu-open {
 }
 
 .post-layout__content h2 {
-  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-size: clamp(1.8rem, 2.6vw, 2.3rem);
 }
 
 .post-layout__content h3 {
-  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  font-size: clamp(1.3rem, 1.7vw, 1.65rem);
 }
 
 .post-layout__content p,
