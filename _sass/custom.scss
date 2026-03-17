@@ -19,6 +19,7 @@ body {
   position: relative;
   flex: 1 0 auto;
   min-height: calc(100vh - 220px);
+  padding-top: 1.5rem;
 }
 
 #main {
@@ -96,7 +97,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(15, 17, 21, 0.96);
+  background: #0f1115;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -1077,6 +1078,10 @@ html[data-theme="light"] .site-header__toggle-line {
 }
 
 @media (max-width: 900px) {
+  .wrapper {
+    padding-top: 1rem;
+  }
+
   .site-container,
   .site-container--narrow {
     padding-inline: 16px;
