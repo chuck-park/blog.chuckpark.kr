@@ -81,7 +81,7 @@ a {
   width: min(760px, calc(100% - 48px));
 }
 
-.site-header {
+.header {
   position: sticky;
   top: 0;
   z-index: 30;
@@ -805,12 +805,12 @@ body.mobile-menu-open {
   color: #ffffff;
 }
 
-#footer.page__footer {
+#footer.footer {
   margin-top: 0;
   background: transparent;
 }
 
-.page__footer footer {
+.footer footer {
   margin-top: 0;
 }
 
@@ -874,7 +874,7 @@ html[data-theme="light"] body {
   color: #2c2a28;
 }
 
-html[data-theme="light"] .site-header {
+html[data-theme="light"] .header {
   background: #ffffff;
   border-bottom-color: rgba(44, 42, 40, 0.08);
 }
@@ -970,7 +970,7 @@ html[data-theme="light"] .site-footer__bottom {
   border-color: rgba(44, 42, 40, 0.08);
 }
 
-html[data-theme="light"] #footer.page__footer {
+html[data-theme="light"] #footer.footer {
   background: #ffffff;
 }
 
