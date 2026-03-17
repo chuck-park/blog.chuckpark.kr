@@ -13,6 +13,9 @@ if ".site-container--narrow{width:100%;max-width:896px;padding-inline:24px}" not
 
 if ".post-layout__title.p-name{max-width:100%}" not in css:
     raise SystemExit("post-layout title should use the full available width")
+
+if ".post-layout__title a{display:block;width:100%;max-width:100%;color:inherit;text-decoration:none}" not in css:
+    raise SystemExit("post-layout title link should use the full available width")
 PY
 
 echo "post layout width check passed"
