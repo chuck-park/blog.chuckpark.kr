@@ -320,6 +320,25 @@ defaults:
       author_profile: false
       share: true
 
+  # Tag detail archives: keep crawlable links but avoid thin-page indexing
+  - scope:
+      path: "_pages/tags"
+    values:
+      robots: "noindex, follow"
+      sitemap: false
+
+  # Year archives: low-value archive pages, exclude from indexing and sitemap
+  - scope:
+      path: "_pages/years"
+    values:
+      robots: "noindex, follow"
+      sitemap: false
+
+  - scope:
+      path: "_pages/year-archive.md"
+    values:
+      robots: "noindex, follow"
+      sitemap: false
+
 
 date_format: "%Y-%m-%d"
-

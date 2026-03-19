@@ -112,6 +112,10 @@
   {% endif %}
 {% endif %}
 
+{% if page.robots %}
+  <meta name="robots" content="{{ page.robots }}">
+{% endif %}
+
 <link rel="canonical" href="{{ canonical_url }}">
 
 {% if paginator.previous_page %}

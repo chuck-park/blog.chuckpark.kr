@@ -18,7 +18,6 @@ required_urls = [
     "https://blog.chuckpark.kr/about/",
     "https://blog.chuckpark.kr/categories/",
     "https://blog.chuckpark.kr/tags/",
-    "https://blog.chuckpark.kr/year-archive/",
 ]
 
 for url in required_urls:
