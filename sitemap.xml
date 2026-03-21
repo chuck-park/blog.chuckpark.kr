@@ -4,6 +4,9 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   {% assign sitemap_pages = site.html_pages | where_exp: "item", "item.sitemap != false" %}
   {% for page in sitemap_pages %}
+    {% if page.url contains "/page" and page.url != "/page-archive/" %}
+      {% continue %}
+    {% endif %}
     <url>
       <loc>{{ page.url | replace: "index.html", "" | absolute_url }}</loc>
       {% if page.last_modified_at %}

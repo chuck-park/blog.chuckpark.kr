@@ -25,6 +25,11 @@
   {%- assign seo_description = seo_description | markdownify | strip_html | newline_to_br | strip_newlines | replace: '<br />', ' ' | escape_once | strip -%}
 {%- endif -%}
 
+{%- assign page_robots = page.robots -%}
+{%- if page_robots == nil and paginator and paginator.page and paginator.page > 1 -%}
+  {%- assign page_robots = "noindex, follow" -%}
+{%- endif -%}
+
 {%- assign author = page.author | default: page.authors[0] | default: site.author -%}
 {%- assign author = site.data.authors[author] | default: author -%}
 
@@ -112,8 +117,8 @@
   {% endif %}
 {% endif %}
 
-{% if page.robots %}
-  <meta name="robots" content="{{ page.robots }}">
+{% if page_robots %}
+  <meta name="robots" content="{{ page_robots }}">
 {% endif %}
 
 <link rel="canonical" href="{{ canonical_url }}">

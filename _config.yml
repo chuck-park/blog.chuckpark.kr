@@ -340,5 +340,30 @@ defaults:
       robots: "noindex, follow"
       sitemap: false
 
+  # Utility/archive pages that dilute crawl priority
+  - scope:
+      path: "_pages/sitemap.md"
+    values:
+      robots: "noindex, follow"
+      sitemap: false
+
+  - scope:
+      path: "_pages/page-archive.html"
+    values:
+      robots: "noindex, follow"
+      sitemap: false
+
+  - scope:
+      path: "_pages/collection-archive.html"
+    values:
+      robots: "noindex, follow"
+      sitemap: false
+
+  - scope:
+      path: "_pages/portfolio-archive.md"
+    values:
+      robots: "noindex, follow"
+      sitemap: false
+
 
 date_format: "%Y-%m-%d"
