@@ -134,31 +134,32 @@ chuck-orchestrator/WORKFLOW.md
 
 `chuck-orchestrator`가 Worktree를 생성하니 오케스트레이터 프로젝트의 일부처럼 느껴집니다. 그러나 Worktree 안에 있는 파일과 branch는 작업 대상 저장소의 것입니다.
 
+그래서 Worktree는 대상 프로젝트 안의 `.worktrees` 디렉터리에 생성합니다.
+
 ```text
 /Users/openclaw/Workspace/chuck-orchestrator
   -> 오케스트레이터 프로그램의 소스
 
-/Users/openclaw/.local/share/chuck-orchestrator/
-  repos/github.com/chuck-park/chuck-ai-harness
-    -> 오케스트레이터가 관리하는 기준 clone
+/Users/openclaw/Workspace/chuck-ai-harness
+  -> 대상 저장소 (사용자가 직접 쓰는 checkout)
 
-  worktrees/github.com/chuck-park/chuck-ai-harness/issue-34
+  .worktrees/issue-34
     -> chuck-ai-harness에서 파생된 Issue 전용 Worktree
 ```
 
-Developer의 현재 작업 디렉터리는 마지막 Worktree입니다. 그 안에는 대상 저장소에서 checkout된 `AGENTS.md`, `WORKFLOW.md`, `README.md`, 소스 코드가 있습니다.
+Developer의 현재 작업 디렉터리는 이 Worktree입니다. 그 안에는 대상 저장소에서 checkout된 `AGENTS.md`, `WORKFLOW.md`, `README.md`, 소스 코드가 있습니다.
 
-이 구조를 선택한 이유는 사용자가 직접 사용하는 `/Workspace/chuck-ai-harness` checkout을 건드리지 않기 위해서입니다. 대상 저장소 안의 `.worktrees/`에 넣는 방법도 있지만, 구조 검사나 파일 검색, IDE 인덱싱이 Worktree 내부까지 훑는 문제가 생길 수 있습니다. 오케스트레이터 전용 runtime 경로에 모아두면 생성·보존·정리 책임도 명확해집니다.
+Worktree를 대상 프로젝트 안에 두면 사용자가 직접 쓰는 checkout과 물리적으로 같은 저장소를 공유하면서도, `.worktrees` 아래로 분리되어 사용자의 작업 브랜치를 건드리지 않습니다. 대상 저장소가 자기 Worktree의 생성·보존·정리를 소유하므로 오케스트레이터가 관리해야 할 별도 runtime 경로도 줄어듭니다.
 
 <!-- IMAGE NOTE
-purpose: chuck-orchestrator 소스 저장소와 대상 저장소의 기준 clone, Worktree, 사용자 checkout 관계를 명확히 보여주기 위함
-suggestion: 왼쪽에 /Workspace/chuck-orchestrator, 오른쪽에 /Workspace/chuck-ai-harness 사용자 checkout, 아래에 ~/.local/share/chuck-orchestrator/repos와 worktrees를 배치하고 Worktree가 chuck-ai-harness에서 파생됨을 점선으로 표시
+purpose: chuck-orchestrator 소스 저장소와 대상 저장소, 그 안의 .worktrees, 사용자 checkout 관계를 명확히 보여주기 위함
+suggestion: 왼쪽에 /Workspace/chuck-orchestrator, 오른쪽에 /Workspace/chuck-ai-harness를 두고, chuck-ai-harness 내부의 사용자 작업 브랜치와 .worktrees/issue-34가 같은 저장소를 공유하되 분리되어 있음을 표현
 placement: Worktree 경로 예시 다음
 -->
 
 ## Developer와 Reviewer는 같은 일을 하지 않습니다
 
-역할 실행 엔진은 Claude Code CLI(`claude`)의 headless 실행입니다. 처음 설계는 Codex CLI 기반이었지만, 지금은 Developer와 Reviewer 모두 Claude Code로 실행합니다.
+역할 실행 엔진은 Claude Code CLI(`claude`)의 headless 실행입니다. 모든 역할을 하나의 모델로 돌리지 않고, 역할의 성격에 맞게 Claude의 여러 모델을 골라 씁니다. 단순한 문서 수정처럼 가벼운 작업은 빠르고 저렴한 모델로, 독립 검토처럼 판단이 중요한 역할은 더 강한 모델로 실행하는 식입니다.
 
 여러 Agent를 쓴다고 해서 모든 역할이 파일을 수정할 수 있게 하지는 않았습니다.
 
@@ -192,6 +193,10 @@ Reviewer Finding은 WORKFLOW.md에 정의한 review focus와 review level(L0–L
 Anthropic의 [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)에서는 한 모델이 결과를 만들고 다른 모델이 평가와 피드백을 제공하는 반복을 evaluator-optimizer 패턴으로 설명합니다. 이번 Developer–Reviewer 구조는 이 패턴에 가깝습니다. 평가 기준이 문서와 검증 명령으로 명확하고, Reviewer의 피드백으로 결과를 개선할 수 있을 때 잘 맞습니다.
 
 ## Chuck Orchestrator ver.1의 실제 흐름
+
+ver.1의 목적은 전체 플로우가 실제로 이어지는지 검증하는 것입니다. 그래서 상시 서비스가 아니라 사람이 CLI로 직접 실행하고, 마지막에는 사람이 PR을 리뷰하는 방식으로 구현했습니다.
+
+궁극적인 목표는 다릅니다. 앞으로는 오케스트레이터가 worker 형태로 상주하면서, 사람이 Issue만 만들어 두면 알아서 작업을 진행하고, 크리티컬하지 않은 PR은 Agent 단에서 직접 merge하여 사람의 개입을 최소화하는 것입니다. ver.1은 그 방향으로 가기 전에 하나의 Issue가 사람 앞까지 안전하게 도착하는지부터 확인하는 단계입니다.
 
 첫 실행은 상시 서비스가 아니라 명시적으로 시작하는 명령입니다.
 
@@ -293,7 +298,7 @@ ver.3 후보
 
 Chuck Orchestrator ver.1의 목표는 사람이 사라지는 것이 아닙니다.
 
-사람이 반복해서 하던 연결 작업을 줄이고, 사람의 시간을 목표 승인과 새로운 결정, 고위험 검토, 최종 merge에 사용하는 것이 목적입니다.
+사람이 반복해서 하던 연결 작업을 줄이고, 사람의 시간을 목표 승인과 새로운 결정, 고위험 변경의 검토와 merge에 집중시키는 것이 목적입니다. 위험이 낮은 변경까지 사람이 일일이 확인하는 단계는 이후 버전에서 걷어낼 대상입니다.
 
 그래서 성공 상태도 `Done`이 아니라 `Human Review`입니다.
 
