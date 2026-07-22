@@ -5,7 +5,7 @@ categories:
 tags:
   - agentic-coding
   - orchestration
-  - codex
+  - claude-code
   - github
   - git-worktree
   - multi-agent
@@ -134,29 +134,32 @@ chuck-orchestrator/WORKFLOW.md
 
 `chuck-orchestrator`가 Worktree를 생성하니 오케스트레이터 프로젝트의 일부처럼 느껴집니다. 그러나 Worktree 안에 있는 파일과 branch는 작업 대상 저장소의 것입니다.
 
+그래서 Worktree는 대상 프로젝트 안의 `.worktrees` 디렉터리에 생성합니다.
+
 ```text
 /Users/openclaw/Workspace/chuck-orchestrator
   -> 오케스트레이터 프로그램의 소스
 
-/Users/openclaw/.local/share/chuck-orchestrator/
-  repos/github.com/chuck-park/chuck-ai-harness
-    -> 오케스트레이터가 관리하는 기준 clone
+/Users/openclaw/Workspace/chuck-ai-harness
+  -> 대상 저장소 (사용자가 직접 쓰는 checkout)
 
-  worktrees/github.com/chuck-park/chuck-ai-harness/issue-42
+  .worktrees/issue-34
     -> chuck-ai-harness에서 파생된 Issue 전용 Worktree
 ```
 
-Developer Codex의 현재 작업 디렉터리는 마지막 Worktree입니다. 그 안에는 대상 저장소에서 checkout된 `AGENTS.md`, `WORKFLOW.md`, `README.md`, 소스 코드가 있습니다.
+Developer의 현재 작업 디렉터리는 이 Worktree입니다. 그 안에는 대상 저장소에서 checkout된 `AGENTS.md`, `WORKFLOW.md`, `README.md`, 소스 코드가 있습니다.
 
-이 구조를 선택한 이유는 사용자가 직접 사용하는 `/Workspace/chuck-ai-harness` checkout을 건드리지 않기 위해서입니다. 대상 저장소 안의 `.worktrees/`에 넣는 방법도 있지만, 구조 검사나 파일 검색, IDE 인덱싱이 Worktree 내부까지 훑는 문제가 생길 수 있습니다. 오케스트레이터 전용 runtime 경로에 모아두면 생성·보존·정리 책임도 명확해집니다.
+Worktree를 대상 프로젝트 안에 두면 사용자가 직접 쓰는 checkout과 물리적으로 같은 저장소를 공유하면서도, `.worktrees` 아래로 분리되어 사용자의 작업 브랜치를 건드리지 않습니다. 대상 저장소가 자기 Worktree의 생성·보존·정리를 소유하므로 오케스트레이터가 관리해야 할 별도 runtime 경로도 줄어듭니다.
 
 <!-- IMAGE NOTE
-purpose: chuck-orchestrator 소스 저장소와 대상 저장소의 기준 clone, Worktree, 사용자 checkout 관계를 명확히 보여주기 위함
-suggestion: 왼쪽에 /Workspace/chuck-orchestrator, 오른쪽에 /Workspace/chuck-ai-harness 사용자 checkout, 아래에 ~/.local/share/chuck-orchestrator/repos와 worktrees를 배치하고 Worktree가 chuck-ai-harness에서 파생됨을 점선으로 표시
+purpose: chuck-orchestrator 소스 저장소와 대상 저장소, 그 안의 .worktrees, 사용자 checkout 관계를 명확히 보여주기 위함
+suggestion: 왼쪽에 /Workspace/chuck-orchestrator, 오른쪽에 /Workspace/chuck-ai-harness를 두고, chuck-ai-harness 내부의 사용자 작업 브랜치와 .worktrees/issue-34가 같은 저장소를 공유하되 분리되어 있음을 표현
 placement: Worktree 경로 예시 다음
 -->
 
 ## Developer와 Reviewer는 같은 일을 하지 않습니다
+
+역할 실행 엔진은 Claude Code CLI(`claude`)의 headless 실행입니다. 모든 역할을 하나의 모델로 돌리지 않고, 역할의 성격에 맞게 Claude의 여러 모델을 골라 씁니다. 단순한 문서 수정처럼 가벼운 작업은 빠르고 저렴한 모델로, 독립 검토처럼 판단이 중요한 역할은 더 강한 모델로 실행하는 식입니다.
 
 여러 Agent를 쓴다고 해서 모든 역할이 파일을 수정할 수 있게 하지는 않았습니다.
 
@@ -167,7 +170,7 @@ Reviewer는 Developer의 세션을 이어받지 않습니다. 매 review round�
 Git commit, push, Draft PR 생성, GitHub comment, label 변경은 오케스트레이터만 담당합니다.
 
 ```text
-Developer Codex
+Developer (Claude Code headless)
   -> 파일 수정
   -> 자체 검증
 
@@ -178,10 +181,12 @@ Chuck Orchestrator
   -> Draft PR 생성
   -> label 변경
 
-Reviewer Codex
+Reviewer (Claude Code headless, 새 context)
   -> 최신 전체 diff 독립 검토
   -> PASS 또는 Reviewer Finding 반환
 ```
+
+Reviewer Finding은 WORKFLOW.md에 정의한 review focus와 review level(L0–L3)에 따라 구조화되어 반환되고, 가능한 경우 PR의 해당 라인에 inline comment로 남습니다.
 
 이렇게 나눈 이유는 Agent의 판단과 외부 상태 변경을 분리하기 위해서입니다. Developer가 예상하지 못한 branch를 만들거나 PR 상태를 바꾸는 일을 줄이고, 오케스트레이터가 재실행할 때 이미 끝난 작업을 확인하기도 쉬워집니다.
 
@@ -189,34 +194,38 @@ Anthropic의 [Building Effective Agents](https://www.anthropic.com/engineering/b
 
 ## Chuck Orchestrator ver.1의 실제 흐름
 
+ver.1의 목적은 전체 플로우가 실제로 이어지는지 검증하는 것입니다. 그래서 상시 서비스가 아니라 사람이 CLI로 직접 실행하고, 마지막에는 사람이 PR을 리뷰하는 방식으로 구현했습니다.
+
+궁극적인 목표는 다릅니다. 앞으로는 오케스트레이터가 worker 형태로 상주하면서, 사람이 Issue만 만들어 두면 알아서 작업을 진행하고, 크리티컬하지 않은 PR은 Agent 단에서 직접 merge하여 사람의 개입을 최소화하는 것입니다. ver.1은 그 방향으로 가기 전에 하나의 Issue가 사람 앞까지 안전하게 도착하는지부터 확인하는 단계입니다.
+
 첫 실행은 상시 서비스가 아니라 명시적으로 시작하는 명령입니다.
 
 ```bash
 chuck-orchestrator run \
   --repo chuck-park/chuck-ai-harness \
-  --issue 42
+  --issue 34
 ```
 
 실행 흐름은 다음과 같습니다.
 
 ```text
-1. Issue #42와 agent:ready 확인
+1. Issue #34와 agent:ready 확인
 2. 대상 저장소의 WORKFLOW.md 로드
 3. Issue 전용 branch와 Worktree 생성
-4. Developer Codex 실행
+4. Developer 실행 (Claude Code headless)
 5. WORKFLOW.md의 검증 명령 재실행
 6. commit, push, Draft PR 생성
 7. agent:review로 변경
-8. 새로운 Reviewer Codex 실행
+8. 새로운 context에서 Reviewer 실행
 9. finding이 있으면 기존 Developer 세션 재개
-10. 최대 2회까지 수정과 재검토 반복
+10. WORKFLOW.md에 정의한 상한(기본 2회)까지 수정과 재검토 반복
 11. 통과하면 agent:human-review로 변경
 12. 자동 merge 없이 종료
 ```
 
-중간에 실패하면 Issue별 상태 JSON에 branch, Worktree, PR 번호, Developer session ID, review round, 마지막 head SHA를 남깁니다. 같은 명령을 다시 실행하면 이미 존재하는 clone, Worktree, branch, commit, PR을 확인하고 마지막으로 안전하게 끝난 단계부터 이어갑니다.
+중간에 실패하면 Issue별 상태 JSON에 branch, Worktree, PR 번호, Developer session ID, review round, 마지막 head SHA를 남깁니다. 같은 명령을 다시 실행하면 이미 존재하는 clone, Worktree, branch, commit, PR을 확인하고 마지막으로 안전하게 끝난 단계부터 이어갑니다. 실행 전체에는 WORKFLOW.md에 정의한 token budget 상한이 있어, 초과하면 멈추고 `--extend-budget`으로 증액해 같은 지점부터 재개할 수 있습니다.
 
-동일 Issue가 두 번 실행되는 것은 lock으로 막습니다. 세 번째 수정 요청이 필요하거나, 새로운 제품 결정이 필요하거나, 자동 복구할 수 없는 Git 충돌이 생기면 `agent:blocked`에서 멈춥니다.
+동일 Issue가 두 번 실행되는 것은 lock으로 막습니다. 수정 왕복이 상한을 넘거나, 두 round 연속 아무 변경이 없거나, 자동 복구할 수 없는 Git 충돌이 생기면 `agent:blocked`에서 멈춥니다. 다만 finding이 구현 결함이 아니라 요구사항 문제(SPEC_GAP 등)로 판정되면 곧바로 막히는 대신, WORKFLOW.md가 허용한 횟수만큼 planner 역할이 재계획을 시도합니다.
 
 중요한 것은 실패하지 않는 시스템이 아니라 실패했을 때 어디서 멈췄는지 알 수 있는 시스템입니다.
 
@@ -226,37 +235,26 @@ suggestion: GitHub Issue, Orchestrator, Developer Worktree, Reviewer, Human을 �
 placement: 전체 실행 단계 목록 다음
 -->
 
-## 첫 번째 작업은 README 한 곳만 바꿉니다
+## 첫 번째 스모크 테스트는 README 한 줄이었습니다
 
-오케스트레이터를 만들면 처음부터 복잡한 기능 개발에 적용해보고 싶어집니다. 하지만 첫 파일럿은 `chuck-ai-harness`의 README 문서 수정으로 정했습니다.
+오케스트레이터를 만들면 처음부터 복잡한 기능 개발에 적용해보고 싶어집니다. 하지만 첫 파일럿은 `chuck-ai-harness`의 README에 orchestrator 자동화 안내 한 줄을 추가하는 스모크 테스트(Issue #34)로 정했습니다.
 
-Issue의 목표는 단순합니다.
+변경 범위는 `README.md` 한 파일입니다. 원래 이런 문서 수정은 위험도가 낮아 독립 Reviewer를 생략할 수도 있습니다. 이번에는 결과물보다 orchestration loop 자체를 검증하는 것이 목적이므로 의도적으로 Reviewer까지 실행했습니다.
 
-```text
-README에서 planner, developer, reviewer 분업 기준을
-쉽게 찾을 수 있도록 agent development workflow 링크와
-한 문장의 설명을 추가한다.
-```
+실행 결과는 다음과 같았습니다.
 
-변경 범위는 `README.md` 한 파일입니다. `AGENTS.md`, workflow 정본, 스크립트, scaffold 출력은 수정하지 않습니다. 검증은 구조 검사와 `git diff --check`입니다.
+- Developer는 사용자 checkout을 건드리지 않고 외부 Worktree에서 파일을 수정했습니다
+- 오케스트레이터는 Developer의 보고를 믿지 않고 WORKFLOW.md의 검증 명령을 다시 실행했습니다
+- commit, push, 실제 Draft PR(#35) 생성은 모두 오케스트레이터가 수행했습니다
+- Reviewer는 Developer와 다른 새로운 context에서 전체 diff를 검토했습니다
+- 통과 후 자동 merge 없이 `agent:human-review`로 전달하고 종료했습니다
 
-원래 이런 문서 수정은 위험도가 낮아 독립 Reviewer를 생략할 수도 있습니다. 이번에는 결과물보다 orchestration loop 자체를 검증하는 것이 목적이므로 의도적으로 Reviewer를 실행합니다.
-
-확인하려는 것은 다음과 같습니다.
-
-- 사용자 checkout을 건드리지 않고 외부 Worktree에서 작업하는가
-- Developer와 Reviewer가 서로 다른 context에서 실행되는가
-- Developer 결과를 믿지 않고 오케스트레이터가 검증을 다시 실행하는가
-- 실제 Draft PR과 GitHub comment가 생성되는가
-- Reviewer가 통과시키면 자동 merge하지 않고 사람에게 넘기는가
-- 중간 실패 후 같은 명령으로 중복 없이 재개되는가
-
-Reviewer가 문제를 찾지 않는다면 억지로 오류를 만들지는 않습니다. 실제 finding 수정 왕복은 자동화 테스트로 검증하고, 파일럿에서 finding이 발생하면 같은 Developer session을 재개하는 흐름까지 관찰합니다.
+마지막 판단은 사람의 몫으로 남았습니다. 스모크 테스트였으므로 저는 결과만 확인하고 PR을 merge하지 않은 채 닫았습니다. Issue 하나가 사람의 중계 없이 Developer, 검증, Reviewer를 거쳐 Human Review까지 도착하는 흐름이 실제로 동작한 것입니다.
 
 <!-- IMAGE NOTE
-purpose: 추상적인 시스템 설명을 실제 README 문서 수정 사례로 연결하기 위함
-suggestion: Issue #42의 Goal/Scope/Acceptance Criteria 카드에서 Worktree의 README 수정, 검증, Draft PR, Human Review로 이어지는 4단계 예시 흐름
-placement: 첫 파일럿에서 확인할 항목 목록 뒤
+purpose: 추상적인 시스템 설명을 실제 스모크 테스트 사례로 연결하기 위함
+suggestion: Issue #34 카드에서 Worktree의 README 수정, 검증 재실행, Draft PR #35, agent:human-review, 사람의 최종 판단으로 이어지는 5단계 예시 흐름
+placement: 실행 결과 목록 뒤
 -->
 
 ## 처음부터 멀티에이전트 플랫폼을 만들지 않는 이유
@@ -267,7 +265,7 @@ placement: 첫 파일럿에서 확인할 항목 목록 뒤
 
 GitHub의 [Agentic Workflows](https://github.github.com/gh-aw/)도 검토했습니다. 자연어 Markdown을 GitHub Actions workflow로 만들고, read-only token, sandbox, safe output 같은 guardrail을 제공한다는 점이 매력적입니다. Issue triage, 문서 유지보수, 정기 보고처럼 GitHub Actions 안에서 끝나는 작업이라면 좋은 출발점입니다.
 
-다만 이번에 직접 확인하려는 것은 로컬 Mac mini의 지속 Worktree, 동일 Developer session 재개, 로컬 Codex 실행이었습니다. 그래서 첫 구현 기반을 GitHub Actions가 아니라 로컬 일회 실행 CLI로 정했습니다.
+다만 이번에 직접 확인하려는 것은 로컬 Mac mini의 지속 Worktree, 동일 Developer session 재개, 로컬 Claude Code 실행이었습니다. 그래서 첫 구현 기반을 GitHub Actions가 아니라 로컬 일회 실행 CLI로 정했습니다.
 
 그렇다고 곧바로 Symphony 수준의 daemon을 만드는 것도 아닙니다.
 
@@ -300,15 +298,15 @@ ver.3 후보
 
 Chuck Orchestrator ver.1의 목표는 사람이 사라지는 것이 아닙니다.
 
-사람이 반복해서 하던 연결 작업을 줄이고, 사람의 시간을 목표 승인과 새로운 결정, 고위험 검토, 최종 merge에 사용하는 것이 목적입니다.
+사람이 반복해서 하던 연결 작업을 줄이고, 사람의 시간을 목표 승인과 새로운 결정, 고위험 변경의 검토와 merge에 집중시키는 것이 목적입니다. 위험이 낮은 변경까지 사람이 일일이 확인하는 단계는 이후 버전에서 걷어낼 대상입니다.
 
 그래서 성공 상태도 `Done`이 아니라 `Human Review`입니다.
 
 이 설계가 실제로 증명해야 하는 것은 거대한 멀티에이전트 시스템을 만들 수 있는지가 아닙니다. 아주 작은 Issue 하나가 명확한 정책 안에서 Developer와 Reviewer를 거쳐, 중간 상태와 근거를 잃지 않고 사람 앞까지 도착할 수 있는지입니다.
 
-그 흐름이 반복해서 안정적으로 동작한 뒤에야 polling, 병렬 작업, Planner 자동화가 의미를 갖습니다.
+그 흐름이 반복해서 안정적으로 동작한 뒤에야 polling, 병렬 작업, 자동 cleanup이 의미를 갖습니다.
 
-지금은 첫 번째 README Issue를 끝까지 보내보는 것으로 충분합니다.
+지금은 첫 번째 README Issue가 사람 앞까지 실제로 도착했다는 것으로 충분합니다.
 
 ## 참고한 자료
 
