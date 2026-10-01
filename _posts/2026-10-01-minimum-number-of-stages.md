@@ -4,6 +4,9 @@ categories: product
 tags:
   - puzzle game
 ---
+
+![퍼즐 게임의 최소 스테이지 수는 몇 개나 있어야 할까?](/assets/images/2026-10-01-minimum-number-of-stages/thumbnail.png)
+
 [퍼즐 게임의 최소 스테이지 수는 몇 개나 있어야할까?]
 
 이제 본격적으로 paid 마케팅 비용을 키워보려고하는데 스테이지 수가 너무 적은 것 같다는 생각이 들었다.
