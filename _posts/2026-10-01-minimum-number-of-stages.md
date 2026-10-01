@@ -31,7 +31,7 @@ AI에게 최소 스테이지 수를 몇으로 하면 좋을지에 대해 물어�
 
 스테이지당 평균 1.5분 기준
 
-[스테이지당 평균 1.5분 기준]!(/assets/images/2026-10-01-minimum-number-of-stages/image.png)
+![스테이지당 평균 1.5분 기준](/assets/images/2026-10-01-minimum-number-of-stages/image.png)
 
 ⇒ 헤비 x 7일에 버퍼를 좀 더 두어 200판을 최소 스테이지 수로 결정.
 
