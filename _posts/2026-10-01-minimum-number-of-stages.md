@@ -1,3 +1,4 @@
+---
 title: 퍼즐 게임 만들기 - 퍼즐 게임의 최소 스테이지 개수
 categories: product
 tags:
