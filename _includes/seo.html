@@ -130,19 +130,70 @@
   <link rel="next" href="{{ paginator.next_page_path | absolute_url }}">
 {% endif %}
 
+{% if og_type == "article" %}
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    {% if site.social.type == "Organization" %}
-      "@type": "Organization",
-      "url": {{ '/' | absolute_url | jsonify }}{% if site.og_image %},
-      "logo": {{ site_og_image | jsonify }}{% endif %}
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ canonical_url | jsonify }}
+    },
+    "headline": {{ page.title | default: site.title | markdownify | strip_html | strip_newlines | escape_once | jsonify }},
+    {% if page_large_image %}
+    "image": [{{ page_large_image | jsonify }}],
+    {% elsif page_teaser_image %}
+    "image": [{{ page_teaser_image | jsonify }}],
+    {% elsif site_og_image %}
+    "image": [{{ site_og_image | jsonify }}],
+    {% endif %}
+    "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+    {% if page.last_modified_at %}
+    "dateModified": {{ page.last_modified_at | date_to_xmlschema | jsonify }},
     {% else %}
+    "dateModified": {{ page.date | date_to_xmlschema | jsonify }},
+    {% endif %}
+    "author": {
+      "@type": "Person",
+      "name": {{ author.name | default: site.author.name | default: site.name | jsonify }},
+      "url": "https://chuckpark.kr"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CP Works",
+      "url": "https://chuckpark.kr",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://chuckpark.kr/assets/profile.jpg"
+      }
+    },
+    "description": {{ seo_description | jsonify }}
+  }
+</script>
+{% endif %}
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": {{ '/' | absolute_url | jsonify }},
+    "name": {{ site.title | jsonify }},
+    "description": {{ site.description | jsonify }},
+    "publisher": {
+      "@type": "Organization",
+      "name": "CP Works",
+      "url": "https://chuckpark.kr",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://chuckpark.kr/assets/profile.jpg"
+      }
+    },
+    "author": {
       "@type": "Person",
       "name": {{ site.social.name | default: site.name | jsonify }},
-      "url": {{ '/' | absolute_url |jsonify }}{% if site.social.links %},
+      "url": "https://chuckpark.kr"{% if site.social.links %},
       "sameAs": {{ site.social.links | jsonify }}{% endif %}
-    {% endif %}
+    }
   }
 </script>
 
