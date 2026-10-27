@@ -30,5 +30,6 @@ _asset_bundler_cache
 _site
 .playwright-cli/
 
-# Project-scoped skills linked from chuck-skills (domain:blog); symlinks kept out of git
+# Project-scoped skills linked from chuck-skills; symlinks kept out of git
 .claude/skills/
+.agents/skills/
